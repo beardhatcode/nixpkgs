@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, python3, pass }:
+{ stdenv, fetchFromGitHub, python3, pass, extid ? "passff@invicem.pro" }:
 
 stdenv.mkDerivation rec {
   pname = "passff-host";
@@ -21,6 +21,9 @@ stdenv.mkDerivation rec {
   installPhase = ''
     substituteInPlace bin/${version}/passff.json \
       --replace PLACEHOLDER $out/share/passff-host/passff.py
+
+    substituteInPlace bin/${version}/passff.json \
+      --replace "passff@invicem.pro" "${extid}"
 
     install -Dt $out/share/passff-host \
       bin/${version}/passff.{py,json}
