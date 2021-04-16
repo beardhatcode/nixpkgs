@@ -669,9 +669,9 @@ in {
             extraConfig = "root ${cfg.home};";
           };
           "~ ^/nix-apps" = {
-              priority = 201;
-              extraConfig = "root ${cfg.home};";
-            };
+            priority = 201;
+            extraConfig = "root ${cfg.home};";
+          };
           "^~ /.well-known" = {
             priority = 210;
             extraConfig = ''
