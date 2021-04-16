@@ -83,12 +83,12 @@ in {
     datadir = mkOption {
       type = types.str;
       default = null;
-      description = "Data storage path of nextcloud.";
+      description = "Data storage path of nextcloud. Will be services.nextcloud.home by default.";
     };
     extraApps = mkOption {
       type = types.attrsOf types.package;
       default = { };
-      description = "Extra apps to install";
+      description = "Extra apps to install. Should point to packages that have appinfo/info.xml in their root.";
     };
     logLevel = mkOption {
       type = types.ints.between 0 4;
