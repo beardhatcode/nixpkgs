@@ -83,7 +83,8 @@ in {
     datadir = mkOption {
       type = types.str;
       default = null;
-      description = "Data storage path of nextcloud. Will be services.nextcloud.home by default.";
+      description = "Data storage path of nextcloud. Will be services.nextcloud.home by default. This folder will be populated with a config and data folder which contain the state of the instance (excl the database).";
+      example = "/mnt/nextcloud-files";
     };
     extraApps = mkOption {
       type = types.attrsOf types.package;
