@@ -61,21 +61,37 @@ stdenv.mkDerivation rec {
   };
 
   postPatch = ''
-    ln -s ${lib.getExe go-vod} bin-ext/go-vod
-    for bin in bin-ext/{go-vod-aarch64,go-vod-amd64}; do
-      ln -sf go-vod $bin
-    done
-
-    for bin in bin-ext/{exiftool-aarch64-glibc,exiftool-aarch64-musl,exiftool-amd64-glibc,exiftool-amd64-musl}; do
-      ln -sf exiftool/exiftool $bin
-    done
-    rm -rf bin-ext/exiftool/*
-    ln -s ${lib.getExe exiftool} bin-ext/exiftool/exiftool
+    rm -rf bin-ext/*
     substituteInPlace lib/Service/BinExt.php \
       --replace-fail "EXIFTOOL_VER = '12.70'" "EXIFTOOL_VER = '${exiftool.version}'"
 
-    ln -s ${lib.getExe ffmpeg} bin-ext/ffmpeg
-    ln -s ${lib.getExe' ffmpeg "ffprobe"} bin-ext/ffprobe
+    patch lib/Settings/SystemConfig.php <<'HERE'
+    @@ -124,6 +124,12 @@
+          */
+         public static function get(string $key, mixed $default = null): mixed
+         {
+    +        switch ($key) {
+    +          case "memories.exiftool": return "${lib.getExe exiftool}";
+    +          case "memories.vod.ffmpeg": return "${lib.getExe ffmpeg}";
+    +          case "memories.vod.ffprobe": return "${lib.getExe' ffmpeg "ffprobe"}";
+    +          case "memories.vod.path": return "${lib.getExe go-vod}";
+    +        }
+             if (!\array_key_exists($key, self::DEFAULTS)) {
+                 throw new \InvalidArgumentException("Invalid system config key: {$key}");
+             }
+    @@ -154,6 +160,10 @@
+          */
+         public static function set(string $key, mixed $value): void
+         {
+    +        if ( in_array($key, array( "memories.exiftool", "memories.vod.ffmpeg", "memories.vod.ffprobe", "memories.vod.path")) ){
+    +            throw new \InvalidArgumentException("Cannot set nix-managed key: {$key}");
+    +        }
+    +
+             // Check if the key is valid
+             if (!\array_key_exists($key, self::DEFAULTS)) {
+                 throw new \InvalidArgumentException("Invalid system config key: {$key}");
+    HERE
+
   '';
 
   installPhase = ''
