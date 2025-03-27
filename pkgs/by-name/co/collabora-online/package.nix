@@ -3,7 +3,6 @@
   cairo,
   cppunit,
   fetchFromGitHub,
-  fetchpatch,
   fetchNpmDeps,
   lib,
   libcap,
@@ -24,13 +23,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "collabora-online";
-  version = "24.04.6-1";
+  version = "24.04.13-2";
 
   src = fetchFromGitHub {
     owner = "CollaboraOnline";
     repo = "online";
     tag = "cp-${finalAttrs.version}";
-    hash = "sha256-0IvymvXAozsjm+GXJK9AGWo79QMaIACrAfkYfX67fBc=";
+    hash = "sha256-d6i/aSmbim7UAKz9VX1ClbtIQravMq0r8beZC9FD6as=";
   };
 
   nativeBuildInputs = [
@@ -66,12 +65,6 @@ stdenv.mkDerivation (finalAttrs: {
 
   patches = [
     ./fix-file-server-regex.patch
-    # Remove after next release
-    (fetchpatch {
-      name = "add-missing-includes-for-poco-1.14.1";
-      url = "https://patch-diff.githubusercontent.com/raw/CollaboraOnline/online/pull/11196.patch";
-      hash = "sha256-ke4dOxITFHK3xMXIdp+zzUEGYMyDxMJrbbXTN+LaoVU=";
-    })
   ];
 
   postPatch = ''
@@ -94,14 +87,13 @@ stdenv.mkDerivation (finalAttrs: {
     postPatch = ''
       cp ${./package-lock.json} package-lock.json
     '';
-    hash = "sha256-CUh+jwJnKtmzk8w6QwH1Nh92500dFj63ThkI4tN5FyQ=";
+    hash = "sha256-0RnGt9NLgyARgbh2GOcz7H3l4vtij8PD5jmcdUDB/5Y=";
   };
 
   npmRoot = "browser";
 
   passthru = {
     libreoffice = libreoffice-collabora; # Used by NixOS module.
-    updateScript = ./update.sh;
   };
 
   meta = {
