@@ -56,7 +56,6 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   configureFlags = [
-    "--disable-setcap"
     "--disable-werror"
     "--enable-silent-rules"
     "--with-lo-path=${libreoffice-collabora}/lib/collaboraoffice"
