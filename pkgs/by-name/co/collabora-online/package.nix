@@ -56,8 +56,8 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   configureFlags = [
-    "--disable-werror"
-    "--enable-silent-rules"
+    "--disable-werror" # ignore deprecation warning due to newer Poco
+    "--enable-silent-rules" # less verbose build output
     "--with-lo-path=${libreoffice-collabora}/lib/collaboraoffice"
     "--with-lokit-path=${libreoffice-collabora.src}/include"
   ];
