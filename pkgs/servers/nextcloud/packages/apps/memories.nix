@@ -72,6 +72,7 @@ stdenv.mkDerivation rec {
 
   postPatch = ''
     rm -rf bin-ext/
+    rm appinfo/signature.json
 
     substituteInPlace lib/Service/BinExt.php \
       --replace-fail "EXIFTOOL_VER = '12.70'" "EXIFTOOL_VER = '${exiftool.version}'"
