@@ -1094,6 +1094,10 @@ with pkgs;
 
   shaperglot = with python3Packages; toPythonApplication shaperglot;
 
+  sst = callPackage ../tools/misc/sst { };
+
+  sst-unwrapped = callPackage ../tools/misc/sst/sst-core.nix { };
+
   supermin = callPackage ../tools/virtualization/supermin {
     ocamlPackages = ocaml-ng.ocamlPackages_4_14;
   };
